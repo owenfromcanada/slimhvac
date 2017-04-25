@@ -3,10 +3,10 @@ import unittest
 
 class BasicViewTest(unittest.TestCase):  
 
-    def setUp(self):  
+    def setUp(self):
         self.browser = webdriver.Firefox()
 
-    def tearDown(self):  
+    def tearDown(self):
         self.browser.quit()
 
     def test_check_current_temperature(self):
