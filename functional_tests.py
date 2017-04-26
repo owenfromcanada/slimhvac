@@ -16,14 +16,21 @@ class BasicViewTest(unittest.TestCase):
 
         # He notices the page title and header shows the product name
         self.assertIn('SlimHVAC', self.browser.title)
-        header_text = self.browser.find_element_by_tag_name('h1').text  
+        header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('SlimHVAC', header_text)
         
         # He can see that there are no thermostats configured.
         table = self.browser.find_element_by_id('id_thermostat_table')
         self.assertTrue(len(table.find_elements_by_tag_name('tr')) == 0)
         
-        self.fail('Finish the test!')
+        # However, he sees a button that invites him to add a thermostat.
+        button = self.browser.find_element_by_id('id_add_thermostat_button')
+    
+    def test_check_add_thermostat(self):
+        # Adam wants to add a thermostat to the database.  He navigates to the
+        # page to add a new thermostat.
+        
+        self.fail("Finish this test.")
 
 if __name__ == '__main__':
     unittest.main()
