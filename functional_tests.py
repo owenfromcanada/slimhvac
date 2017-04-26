@@ -1,4 +1,5 @@
 from selenium import webdriver
+import time
 import unittest
 
 class BasicViewTest(unittest.TestCase):  
@@ -48,6 +49,7 @@ class BasicViewTest(unittest.TestCase):
         submit_button.click()
         
         # He is redirected to the start page
+        time.sleep(1)
         
         # Where his new thermostat is displayed
         table = self.browser.find_element_by_id('id_thermostat_table')
