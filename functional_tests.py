@@ -21,7 +21,7 @@ class BasicViewTest(unittest.TestCase):
         
         # He can see that there are no thermostats configured.
         table = self.browser.find_element_by_id('id_thermostat_table')
-        assertTrue(table.find_elements_by_tag_name('tr') == None)
+        self.assertTrue(len(table.find_elements_by_tag_name('tr')) == 0)
         
         self.fail('Finish the test!')
 
