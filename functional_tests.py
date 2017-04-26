@@ -16,9 +16,14 @@ class BasicViewTest(unittest.TestCase):
 
         # He notices the page title and header shows the product name
         self.assertIn('SlimHVAC', self.browser.title)
-        self.fail('Finish the test!')
+        header_text = self.browser.find_element_by_tag_name('h1').text  
+        self.assertIn('SlimHVAC', header_text)
         
-        # He can see the current temperature displayed
+        # He can see that there are no thermostats configured.
+        table = self.browser.find_element_by_id('id_thermostat_table')
+        assertTrue(table.find_elements_by_tag_name('tr') == None)
+        
+        self.fail('Finish the test!')
 
 if __name__ == '__main__':
     unittest.main()
