@@ -29,6 +29,31 @@ class BasicViewTest(unittest.TestCase):
     def test_check_add_thermostat(self):
         # Adam wants to add a thermostat to the database.  He navigates to the
         # page to add a new thermostat.
+        self.browser.get('http://localhost:8000/thermostat/new')
+        
+        # He notices the page header indicates he's adding a new thermostat.
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('New Thermostat', header_text)
+        
+        # He sees various input fields.
+        name_input = self.browser.find_element_by_id('id_name')
+        zwave_id_input = self.browser.find_element_by_id('id_zwave_id')
+        
+        # He types in a name and id for the thermostat.
+        name_input.send_keys('Main Thermostat')
+        zwave_id_input.send_keys('1')
+        
+        # He clicks the submit button.
+        submit_button = self.browser.find_element_by_id('id_submit')
+        submit_button.click()
+        
+        # He is redirected to the start page
+        
+        # Where his new thermostat is displayed
+        table = self.browser.find_element_by_id('id_thermostat_table')
+        self.assertTrue(len(table.find_elements_by_tag_name('tr')) == 1)
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('Main Thermostat', [row.text for row in rows])
         
         self.fail("Finish this test.")
 
