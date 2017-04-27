@@ -4,8 +4,11 @@
     </head>
     <body>
         <h1>New Thermostat</h1>
-        <input id="id_name" />
-        <input id="id_zwave_id" />
-        <a id="id_submit" href="{% url 'start' %}">Submit</a>
+        <form method="POST" action="{% url 'start' %}">
+            <input id="id_name" type="text" name="name_text" />
+            <input id="id_zwave_id" type="text" name="zwave_id_text" />
+            <input id="id_submit" type="submit" />
+            {% csrf_token %}
+        </form>
     </body>
 </html>
