@@ -1,14 +1,25 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 import time
 
-class BasicViewTest(LiveServerTestCase):  
+class BasicViewTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
 
     def tearDown(self):
         self.browser.quit()
+    
+    def wait_for(self, fn):
+        start_time = time.time()
+        while True:
+            try:
+                return fn()
+            except (AssertionError, WebDriverException) as e:
+                if time.time() - start_time > 10:
+                    raise e
+                time.sleep(0.1)
 
     def test_check_current_temperature(self):
         # Adam wants to check the current temperature reading of the thermostat.
@@ -49,7 +60,7 @@ class BasicViewTest(LiveServerTestCase):
         submit_button.click()
         
         # He is redirected to the start page
-        time.sleep(1)
+        self.wait_for(lambda: self.assertEqual(self.browser.current_url, self.live_server_url + '/'))
         
         # Where his new thermostat is displayed
         table = self.browser.find_element_by_id('id_thermostat_table')
