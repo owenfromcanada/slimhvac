@@ -5,6 +5,9 @@
     <body>
         <h1>SlimHVAC</h1>
         <table id="id_thermostat_table">
+            {% for thermostat in thermostats %}
+                <tr><td>{{ thermostat.name }}</td></tr>
+            {% endfor %}
         </table>
         <p>
             <a id="id_add_thermostat_button" href="#">Add Thermostat</a>

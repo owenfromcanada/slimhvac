@@ -24,6 +24,15 @@ class StartPageTest(TestCase):
         self.client.post('/', data={'name_text': 'Thermostat name', 'zwave_id_text': '1'})
         self.assertEqual(Thermostat.objects.count(), 1)
         self.assertEqual(Thermostat.objects.first().name, 'Thermostat name')
+    
+    def test_displays_all_thermostats(self):
+        Thermostat.objects.create(name='First thermostat', zwave_id='1')
+        Thermostat.objects.create(name='Second thermostat', zwave_id='2')
+        
+        response = self.client.get('/')
+        
+        self.assertIn('First thermostat', response.content.decode())
+        self.assertIn('Second thermostat', response.content.decode())
 
 
 class ThermostatPageTest(TestCase):
