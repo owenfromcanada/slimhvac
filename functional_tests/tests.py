@@ -34,14 +34,15 @@ class BasicViewTest(LiveServerTestCase):
         # He can see that there are no thermostats configured.
         table = self.browser.find_element_by_id('id_thermostat_table')
         self.assertTrue(len(table.find_elements_by_tag_name('tr')) == 0)
-        
-        # However, he sees a button that invites him to add a thermostat.
-        button = self.browser.find_element_by_id('id_add_thermostat_button')
     
     def test_check_add_thermostat(self):
-        # Adam wants to add a thermostat to the database.  He navigates to the
-        # page to add a new thermostat.
-        self.browser.get(self.live_server_url + '/thermostat/new')
+        # Adam notices a link to add a new thermostat on the start page.
+        self.browser.get(self.live_server_url)
+        button = self.browser.find_element_by_id('id_new_thermostat_button')
+        button.click()
+        
+        # He waits for the page to load
+        self.wait_for(lambda: self.assertEqual(self.browser.current_url, self.live_server_url + '/thermostat/new'))
         
         # He notices the page header indicates he's adding a new thermostat.
         header_text = self.browser.find_element_by_tag_name('h1').text

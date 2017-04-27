@@ -14,17 +14,6 @@ class StartPageTest(TestCase):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'start.html')
     
-    def test_start_page_redirects_after_post_request(self):
-        response = self.client.post('/', data={'name_text': 'Thermostat name', 'zwave_id_text': '1'})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
-    
-    def test_new_thermostat_saved(self):
-        self.assertEqual(Thermostat.objects.count(), 0)
-        self.client.post('/', data={'name_text': 'Thermostat name', 'zwave_id_text': '1'})
-        self.assertEqual(Thermostat.objects.count(), 1)
-        self.assertEqual(Thermostat.objects.first().name, 'Thermostat name')
-    
     def test_displays_all_thermostats(self):
         Thermostat.objects.create(name='First thermostat', zwave_id='1')
         Thermostat.objects.create(name='Second thermostat', zwave_id='2')
@@ -40,6 +29,17 @@ class ThermostatPageTest(TestCase):
     def test_new_thermostat_template_used(self):
         response = self.client.get('/thermostat/new')
         self.assertTemplateUsed(response, 'new.html')
+    
+    def test_redirect_after_new_thermostat_post_request(self):
+        response = self.client.post('/thermostat/add', data={'name_text': 'Thermostat name', 'zwave_id_text': '1'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
+    
+    def test_new_thermostat_saved(self):
+        self.assertEqual(Thermostat.objects.count(), 0)
+        self.client.post('/thermostat/add', data={'name_text': 'Thermostat name', 'zwave_id_text': '1'})
+        self.assertEqual(Thermostat.objects.count(), 1)
+        self.assertEqual(Thermostat.objects.first().name, 'Thermostat name')
 
 
 class ThermostatModelTest(TestCase):
@@ -59,4 +59,3 @@ class ThermostatModelTest(TestCase):
         self.assertEqual(saved_therms.count(), 2)
         self.assertEqual(saved_therms[0].name, 'Name of first')
         self.assertEqual(saved_therms[1].name, 'Second thermostat')
-        
