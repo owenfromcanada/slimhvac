@@ -1,8 +1,8 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 import time
-import unittest
 
-class BasicViewTest(unittest.TestCase):  
+class BasicViewTest(LiveServerTestCase):  
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -13,7 +13,7 @@ class BasicViewTest(unittest.TestCase):
     def test_check_current_temperature(self):
         # Adam wants to check the current temperature reading of the thermostat.
         # He navigates to the home page.
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # He notices the page title and header shows the product name
         self.assertIn('SlimHVAC', self.browser.title)
@@ -30,7 +30,7 @@ class BasicViewTest(unittest.TestCase):
     def test_check_add_thermostat(self):
         # Adam wants to add a thermostat to the database.  He navigates to the
         # page to add a new thermostat.
-        self.browser.get('http://localhost:8000/thermostat/new')
+        self.browser.get(self.live_server_url + '/thermostat/new')
         
         # He notices the page header indicates he's adding a new thermostat.
         header_text = self.browser.find_element_by_tag_name('h1').text
@@ -56,8 +56,3 @@ class BasicViewTest(unittest.TestCase):
         self.assertTrue(len(table.find_elements_by_tag_name('tr')) == 1)
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn('Main Thermostat', [row.text for row in rows])
-        
-        self.fail("Finish this test.")
-
-if __name__ == '__main__':
-    unittest.main()
